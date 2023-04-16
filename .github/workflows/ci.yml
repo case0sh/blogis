@@ -16,13 +16,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install Zola
+      - name: Install hugo
         run: sudo snap install hugo
 
       - name: Build the website
         run: hugo
 
-      - name: Scan the host key
+      - name: Scan the host keyb
         run: mkdir -p ~/.ssh/ && ssh-keyscan -p 69 -H $DEPLOY_SERVER >> ~/.ssh/known_hosts
         env:
           DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
