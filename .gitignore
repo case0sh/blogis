@@ -1,18 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,hugo,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,hugo,macos
 
-### Hugo ###
-# Generated files by hugo
-/public/
-/resources/_gen/
-/assets/jsconfig.json
-hugo_stats.json
 
 # Executable may be added to repository
-hugo.exe
-hugo.darwin
-hugo.linux
-
 # Temporary lock file while building
 /.hugo_build.lock
 
@@ -23,7 +13,6 @@ hugo.linux
 .LSOverride
 
 # Icon must end with two \r
-Icon
 node_modules/*
 
 # Thumbnails
