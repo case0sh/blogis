@@ -1,0 +1,15 @@
+baseurl = "/"
+title = "console-demo"
+
+languageCode = "en-us"
+theme = "moments"
+paginate = 10
+paginatePath = '.'
+
+[params]
+    title = "Moments"
+    signature = "Club"
+    cover = "https://cdn.pixabay.com/photo/2018/03/13/22/53/puzzle-3223941_1280.jpg"
+
+    name = "Default User"
+    avatar = "/img/default_avatar.png"
