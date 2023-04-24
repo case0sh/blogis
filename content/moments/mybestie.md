@@ -8,9 +8,9 @@ tags:
  - moment
 
 pictures: 
- - https://cdn.pixabay.com/photo/2016/03/09/11/57/grand-canyon-1246248_1280.jpg
+ - ../../photos/arizona-us/arizona-us.jpg
 
 note:  moment
 ---
 
-moment
+You arrive at the club with your friends, and you can feel the energy in the air. The DJ is playing your favorite songs, and the dance floor is packed with people moving to the beat. You order a drink at the bar and take in the scene around you.
