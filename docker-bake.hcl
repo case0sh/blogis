@@ -9,7 +9,7 @@ target "build" {
   dockerfile = "Dockerfile"
   platforms = [
     "linux/amd64",
-    "linux/aarm64v8"
+    "linux/arm64v8"
   ]
   output = ["."]
 }

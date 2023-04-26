@@ -36,7 +36,7 @@ RUN minify --recursive --verbose \
 
 ##
 
-FROM nginx:1.24.0-alpine
+FROM nginx:alpine
 COPY --from=2 /data/public /usr/share/nginx/html
 
 # docker container run --rm -it -p 8080:80 hugo-blog
