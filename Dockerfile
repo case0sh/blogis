@@ -6,10 +6,10 @@ WORKDIR /data
 
 ##
 
-FROM skyscrapers/hugo:0.46
+FROM razonyang/hugo:latest
 COPY --from=0 /data /data
 WORKDIR /data
-RUN hugo
+RUN hugo --gc --minify
 
 ##
 
