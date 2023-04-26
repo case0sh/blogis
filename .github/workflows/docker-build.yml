@@ -32,14 +32,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Build
-        uses: docker/bake-action@v2
-        with:
-          files: |
-            ./docker-bake.hcl
-            ${{ steps.meta.outputs.bake-file }}
-          targets: build
+
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
