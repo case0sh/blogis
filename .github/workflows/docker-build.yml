@@ -14,7 +14,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: case0sh/blogis
+  IMAGE_NAME: ${{ github.actor }}/${{ github.repository }}
 
 jobs:
   push_to_registry:
