@@ -32,15 +32,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-            file: .Dockerfile
-            platforms: linux/amd64
-            push: true
-            tags: case0sh/blogis:${{ env.BRANCH }}
-            build-args: |
-                BRANCH=${{ env.BRANCH }}
 
+      - name: Build and push Docker images
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
