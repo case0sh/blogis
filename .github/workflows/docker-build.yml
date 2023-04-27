@@ -39,7 +39,7 @@ jobs:
             file: .Dockerfile
             platforms: linux/amd64
             push: true
-            tags: splitbrain/dokuwiki:${{ env.BRANCH }}
+            tags: case0sh/blogis:${{ env.BRANCH }}
             build-args: |
                 BRANCH=${{ env.BRANCH }}
 
