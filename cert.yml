@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-nginx
+spec:
+  acme:
+    email: nipp0chan@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-nginx
+    solvers:
+      # Use the HTTP-01 challenge provider
+      - http01:
+          ingress:
+            ingressClassName: nginx
