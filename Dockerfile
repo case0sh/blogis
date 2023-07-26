@@ -7,10 +7,14 @@ WORKDIR /data
 ##
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 FROM skyscrapers/hugo:latest
 =======
 FROM razonyang/hugo:latest
 >>>>>>> 34e5276bdb780bee2b183f48a8a4c6212081d604
+=======
+FROM skyscrapers/hugo:latest
+>>>>>>> 999c782c1c75877967735e46f2f6e0d24666161b
 COPY --from=0 /data /data
 WORKDIR /data
 RUN hugo --gc --minify
