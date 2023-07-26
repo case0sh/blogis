@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: story-service
+  name: story
 spec:
   selector: 
     app: story
@@ -21,6 +21,8 @@ spec:
   selector:
     matchLabels:
       app: story
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -32,6 +34,14 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          # resources:
+          #   requests:
+          #     cpu: 1000m
+          #     memory: 900Mi
+          #   limits:
+          #     cpu: 1500m
+          #     memory: 950Mi
+              
           livenessProbe: 
             httpGet:
               path: /
@@ -39,7 +49,11 @@ spec:
             periodSeconds: 10
             initialDelaySeconds: 5
 
-#           volumeMounts: 
+
+
+
+
+# n          volumeMounts: 
 #             - mountPath: /data/public
 #               name: story-vol
 #       volumes:

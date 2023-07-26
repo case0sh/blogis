@@ -13,13 +13,13 @@ spec:
   rules:
     - http:
         paths:
-          - path: /blog
+          - path: /
             # UPDATE PATH
             pathType: Prefix
             # ADD PATHTYPE
             backend:
               service:
                 # UPDATE SERVICE FIELDS
-                name:  story
+                name: prom-grafana
                 port:
                   number: 80
