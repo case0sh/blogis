@@ -3,7 +3,7 @@ COPY . /data
 WORKDIR /data
 # RUN rm -rf themes/*
 # RUN git clone https://github.com/nanxiaobei/hugo-paper.git themes/hugo-paper
-FROM skyscrapers/hugo:latest
+FROM klakegg/hugo:latest
 
 
 COPY --from=0 /data /data
