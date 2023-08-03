@@ -17,7 +17,7 @@ kind: Deployment
 metadata:
   name: story-deployment
 spec: 
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: story
@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: story
-          image: case0sh/blogis:1.0.47
+          image: case0sh/blogis:1.0.49
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -53,7 +53,7 @@ spec:
 
 
 
-# n          volumeMounts: 
+#            volumeMounts: 
 #             - mountPath: /data/public
 #               name: story-vol
 #       volumes:
