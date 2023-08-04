@@ -27,19 +27,19 @@ spec:
                 name:  story
                 port:
                   number: 80
-    - host: wp.case0sh.com
-      http:
-        paths:
-          - path: /
-            # UPDATE PATH
-            pathType: Prefix
-            # ADD PATHTYPE
-            backend:
-              service:
-                # UPDATE SERVICE FIELDS
-                name:  wp2-wordpress
-                port:
-                  number: 80
+    # - host: wp.case0sh.com
+    #   http:
+    #     paths:
+    #       - path: /
+    #         # UPDATE PATH
+    #         pathType: Prefix
+    #         # ADD PATHTYPE
+    #         backend:
+    #           service:
+    #             # UPDATE SERVICE FIELDS
+    #             name:  wp2-wordpress
+    #             port:
+    #               number: 80
     - host: mon.case0sh.com
       http:
         paths:
@@ -56,6 +56,6 @@ spec:
   tls:
     - hosts:
       - case0sh.com
-      - wp.case0sh.com
+      # - wp.case0sh.com
       - mon.case0sh.com
       secretName: onemo
