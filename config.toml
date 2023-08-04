@@ -1,6 +1,6 @@
 baseURL = 'http://gohugo.io/'
 languageCode = 'en-us'
-theme = "nightfall"
+theme = "night"
 
 [menu]
   [[menu.header]]
