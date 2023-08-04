@@ -1,0 +1,12 @@
+name = "Night"
+license = "MIT"
+licenselink = "https://git"
+description = "Minimal dark theme for Hugo"
+homepage = "https://g"
+tags = ["minimal", "dark", "blog", "sass", "multilingual"]
+features = ["blog", "sass", "dark", "multilingual"]
+min_version = "0.80.0"
+
+[author]
+name = "Ma"
+homepage = "https://na"
