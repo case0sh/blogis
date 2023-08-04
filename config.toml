@@ -1,7 +1,8 @@
 baseURL = 'http://gohugo.io/'
 languageCode = 'en-us'
 theme = "night"
-
+relativeURLs = true
+canonifyURLs = true
 [menu]
   [[menu.header]]
     name = "blog"

@@ -7,7 +7,6 @@ FROM klakegg/hugo:latest
 COPY --from=0 /data /data
 WORKDIR /data
 RUN hugo --gc --minify
-# COPY --from=1 /data/public /data/public
 ##
 
 # FROM mysocialobservations/docker-tdewolff-minify
