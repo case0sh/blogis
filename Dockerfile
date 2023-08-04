@@ -7,29 +7,29 @@ FROM klakegg/hugo:latest
 COPY --from=0 /data /data
 WORKDIR /data
 RUN hugo --gc --minify
-
+COPY --from=1 /data/public /data/public
 ##
 
-FROM mysocialobservations/docker-tdewolff-minify
-COPY --from=1 /data/public /data/public
-WORKDIR /data
-RUN minify --recursive --verbose \
-        --match=\.*.js$ \
-        --type=js \
-        --output public/ \
-        public/
+# FROM mysocialobservations/docker-tdewolff-minify
+# COPY --from=1 /data/public /data/public
+# WORKDIR /data
+# RUN minify --recursive --verbose \
+#         --match=\.*.js$ \
+#         --type=js \
+#         --output public/ \
+#         public/
 
-RUN minify --recursive --verbose \
-        --match=\.*.css$ \
-        --type=css \
-        --output public/ \
-        public/
+# RUN minify --recursive --verbose \
+#         --match=\.*.css$ \
+#         --type=css \
+#         --output public/ \
+#         public/
 
-RUN minify --recursive --verbose \
-        --match=\.*.html$ \
-        --type=html \
-        --output public/ \
-        public/
+# RUN minify --recursive --verbose \
+#         --match=\.*.html$ \
+#         --type=html \
+#         --output public/ \
+#         public/
 
 ##
 
