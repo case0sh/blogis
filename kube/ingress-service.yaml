@@ -6,6 +6,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-production
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
   # annotations:
   #   nginx.ingress.kubernetes.io/use-regex: 'true'
   #   # ADD ANNOTATION
@@ -24,22 +26,9 @@ spec:
             backend:
               service:
                 # UPDATE SERVICE FIELDS
-                name:  story
+                name:  story-storyblog
                 port:
                   number: 80
-    # - host: wp.case0sh.com
-    #   http:
-    #     paths:
-    #       - path: /
-    #         # UPDATE PATH
-    #         pathType: Prefix
-    #         # ADD PATHTYPE
-    #         backend:
-    #           service:
-    #             # UPDATE SERVICE FIELDS
-    #             name:  wp2-wordpress
-    #             port:
-    #               number: 80
     - host: mon.case0sh.com
       http:
         paths:
@@ -56,6 +45,33 @@ spec:
   tls:
     - hosts:
       - case0sh.com
-      # - wp.case0sh.com
       - mon.case0sh.com
       secretName: onemo
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-http-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  ingressClassName: "nginx"
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
+    host: argo.case0sh.com
+  tls:
+  - hosts:
+    - argo.case0sh.com
+    secretName: argocd-secret # do not change, this is provided by Argo CD
