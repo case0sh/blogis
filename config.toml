@@ -1,4 +1,4 @@
-baseURL = 'http://gohugo.io/'
+baseURL = 'http://case0sh.com/'
 languageCode = 'en-us'
 theme = "night"
 relativeURLs = true
@@ -14,12 +14,9 @@ canonifyURLs = true
     url = "about"
 
 [params]
-author = "Hugo Nightfall"
+author = "Hugo case"
 user = "hello"
-hostname = "gohugo.io"
-
-readingTime = true  # Show reading time on post page
-published = true  # Show published data on post page
+hostname = "case0sh.com"
 
 [[params.social]]
 key = 0
