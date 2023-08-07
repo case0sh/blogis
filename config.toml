@@ -14,7 +14,7 @@ canonifyURLs = true
     url = "about"
 
 [params]
-author = "Hugo case"
+author = "Hello case"
 user = "hello"
 hostname = "case0sh.com"
 
