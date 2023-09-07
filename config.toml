@@ -1,4 +1,4 @@
-baseURL = 'http://case0sh.com/'
+baseURL = 'https://case0sh.com/'
 languageCode = 'en-us'
 theme = "night"
 relativeURLs = true
