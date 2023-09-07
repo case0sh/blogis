@@ -1,63 +1,44 @@
-
-
-
-
-baseurl      = "https://case0sh.com/"
-title        = "My Blog"
-languageCode = "en-us"
-theme        = "hello-friend-ng"
-paginate     = 10
-
-[params]
-  dateform        = "Jan 2, 2006"
-  dateformShort   = "Jan 2"
-  dateformNum     = "2006-01-02"
-  dateformNumTime = "2006-01-02 15:04"
-
+baseURL = 'https://case0sh.com/'
+languageCode = 'en-us'
+theme = "night"
 relativeURLs = true
 canonifyURLs = true
-  # Subtitle for home
-  homeSubtitle = "A simple and beautiful blog"
+[menu]
+  [[menu.header]]
+    name = "blog"
+    weight = 0
+    url = "blog"
+  [[menu.header]]
+    name = "about"
+    weight = 1
+    url = "about"
 
-  # Set disableReadOtherPosts to true in order to hide the links to other posts.
-  disableReadOtherPosts = false
+[params]
+author = "Hello case0sh"
+user = "hello"
+hostname = "case0sh.com"
 
-  # Enable sharing buttons, if you like
-  enableSharingButtons = true
+[[params.social]]
+key = 0
+name = "github"
+url = "https://github.com/gohugoio"
 
-  # Show a global language switcher in the navigation bar
-  enableGlobalLanguageMenu = true
+[[params.social]]
+key = 1
+name = "twitter"
+url = "https://www.example.com"
 
-  # Metadata mostly used in document's head
-  description = "My new homepage or blog"
-  keywords = "homepage, blog"
-  images = [""]
+[[params.social]]
+key = 2
+name = "linkedin"
+url = "https://www.example.com"
 
-[taxonomies]
-    category = "blog"
-    tag      = "tags"
-    series   = "series"
+[[params.social]]
+key = 3
+name = "email"
+url = "mailto:email@example.com"
 
-[languages]
-  [languages.en]
-    title = "Hello "
-    keywords = ""
-
-    readOtherPosts = "Read other posts"
-
-  [languages.en.params]
-    subtitle  = "A simple theme for Hugo"
-
-    [languages.en.params.logo]
-      logoText = "hello friend ng"
-      logoHomeLink = "/"
-    # or
-    #
-    # path = "/img/your-example-logo.svg"
-    # alt = "Your example logo alt text"
-
-  # And you can even create generic menu
-  [[menu.main]]
+[[menu.main]]
     identifier = "blog"
     name       = "Blog"
     url        = "/posts"
