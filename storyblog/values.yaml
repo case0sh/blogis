@@ -8,7 +8,7 @@ image:
   repository: case0sh/blogis
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.69"
+  tag: "1.0.70"
 
 imagePullSecrets: []
 nameOverride: ""
