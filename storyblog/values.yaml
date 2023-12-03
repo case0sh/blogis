@@ -8,7 +8,7 @@ image:
   repository: case0sh/blogis
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.73"
+  tag: "1.0.74"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -62,10 +62,10 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 100m
+    cpu: 50m
     memory: 128Mi
   requests:
-    cpu: 100m
+    cpu: 50m
     memory: 128Mi
 
 autoscaling:
