@@ -1,39 +1,59 @@
-baseURL = 'https://case0sh.com/'
-languageCode = 'en-us'
-theme = "night"
-relativeURLs = true
-canonifyURLs = true
-[menu]
-  [[menu.header]]
-    name = "blog"
-    weight = 0
-    url = "blog"
-  [[menu.header]]
-    name = "about"
-    weight = 1
-    url = "about"
+
+
+baseurl      = "https://case0sh.com/"
+title        = "My Blog"
+languageCode = "en-us"
+theme        = "hello-friend-ng"
+paginate     = 10
 
 [params]
-author = "Hello case0sh"
-user = "hello"
-hostname = "case0sh.com"
+  dateform        = "Jan 2, 2006"
+  dateformShort   = "Jan 2"
+  dateformNum     = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04"
 
-[[params.social]]
-key = 0
-name = "github"
-url = "https://github.com/gohugoio"
+  # Subtitle for home
+  homeSubtitle = "A simple and beautiful blog"
 
-[[params.social]]
-key = 1
-name = "twitter"
-url = "https://www.example.com"
+  # Set disableReadOtherPosts to true in order to hide the links to other posts.
+  disableReadOtherPosts = false
 
-[[params.social]]
-key = 2
-name = "linkedin"
-url = "https://www.example.com"
+  # Enable sharing buttons, if you like
+  enableSharingButtons = true
 
-[[params.social]]
-key = 3
-name = "email"
-url = "mailto:email@example.com"
+  # Show a global language switcher in the navigation bar
+  enableGlobalLanguageMenu = true
+
+  # Metadata mostly used in document's head
+  description = "My new homepage or blog"
+  keywords = "homepage, blog"
+  images = [""]
+
+[taxonomies]
+    category = "blog"
+    tag      = "tags"
+    series   = "series"
+
+[languages]
+  [languages.en]
+    title = "Hello Friend NG"
+    keywords = ""
+    copyright = '<a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>'
+    readOtherPosts = "Read other posts"
+
+  [languages.en.params]
+    subtitle  = "A simple theme for Hugo"
+
+    [languages.en.params.logo]
+      logoText = "hello friend ng"
+      logoHomeLink = "/"
+    # or
+    #
+    # path = "/img/your-example-logo.svg"
+    # alt = "Your example logo alt text"
+
+  # And you can even create generic menu
+  [[menu.main]]
+    identifier = "blog"
+    name       = "Blog"
+    url        = "/posts"
