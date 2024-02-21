@@ -1,0 +1,22 @@
+name: Run Gosec
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    container:
+      image: securego/gosec:2.15.0
+      options: --user root
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run Go Security Check
+        run: |
+          gosec -exclude-dir=migrate ./...
+        working-directory: ${{ github.workspace }}/packages/serverless
