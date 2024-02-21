@@ -9,7 +9,7 @@ jobs:
     steps:
        - uses: actions/checkout@v2
          with:
-          ref: master
+          ref: main
        - name: Building Docker Node-Goat Image
          run: docker-compose build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} .
        - name: Launching the app
