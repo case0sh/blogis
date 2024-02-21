@@ -11,7 +11,7 @@ jobs:
          with:
           ref: main
        - name: Building Docker Node-Goat Image
-         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} .
+         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest .
        - name: Launching the app
          run: docker run --detach
 
