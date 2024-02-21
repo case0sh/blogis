@@ -19,4 +19,4 @@ jobs:
       - name: Run Go Security Check
         run: |
           gosec -exclude-dir=migrate ./...
-        working-directory: ${{ github.workspace }}/packages/serverless
+        working-directory: ${{ github.workspace }}
