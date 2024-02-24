@@ -1,0 +1,83 @@
+# ------------------------------------------------------------------------------
+# Base
+
+FROM golang:1.20.2-alpine AS hugo
+
+SHELL ["/bin/ash", "-c"]
+
+# ------------------------------------------------------------------------------
+# Working directory
+
+RUN set -exo pipefail                   && \
+                                           \
+    echo 'Create the working directory' && \
+    mkdir /work
+
+WORKDIR /work
+
+# ------------------------------------------------------------------------------
+# Packages
+
+RUN set -exo pipefail                 && \
+                                         \
+    echo 'Installing common packages' && \
+    apk add --update --no-cache \
+      build-base                \
+      ca-certificates           \
+      curl                      \
+      git                       \
+      libc6-compat              \
+      libstdc++                 \
+      make                      \
+      rsync                     \
+      coreutils
+
+# ------------------------------------------------------------------------------
+# Hugo
+
+RUN set -exo pipefail                                                    && \
+                                                                            \
+    echo 'Seting up temporary environment variables'                     && \
+    VERSION=0.123.3                                                      && \
+    PACKAGE=hugo-"$VERSION".tar.gz                                       && \
+    BASE=https://codeload.github.com/gohugoio/hugo/tar.gz/refs/tags      && \
+    URL="$BASE/v$VERSION"                                                && \
+                                                                            \
+    echo 'Downloading Hugo'                                              && \
+    curl -fsSLo "$PACKAGE" "$URL"                                        && \
+                                                                            \
+    echo 'Checking package signature'                                    && \
+    sha256sum "$PACKAGE"                                                 && \
+                                                                            \
+    echo 'Extracting package'                                            && \
+    mkdir -p /var/hugo                                                   && \
+    tar -xzf "$PACKAGE" -C /var/hugo --strip-components=1                && \
+    rm -rf "$PACKAGE"                                                    && \
+                                                                            \
+    echo 'Compile Hugo'                                                  && \
+    cd /var/hugo                                                         && \
+    CGO_ENABLED=1                                                           \
+    GOPATH=/var/hugo/gopath                                                 \
+    go build -v -o bin/hugo --tags extended -gcflags="-e"                && \
+    mv bin/hugo /usr/local/bin/                                          && \
+    rm -rf /var/hugo ~/.cache ~/go
+
+# ------------------------------------------------------------------------------
+# Execution
+
+# CMD ["/usr/local/bin/hugo"]
+
+# ------------------------------------------------------------------------------
+# Hugo
+
+CMD ["/run.sh"]
+
+EXPOSE 1313
+
+
+COPY . /data
+WORKDIR /data
+RUN hugo --gc --minify
+
+FROM nginx:alpine
+COPY --from=hugo /data/public /usr/share/nginx/html
