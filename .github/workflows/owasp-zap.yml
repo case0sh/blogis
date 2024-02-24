@@ -27,8 +27,9 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: latest=true
           tags: |
+            type=raw,value=1.0.${{ github.run_number }},priority=1000
             type=raw,value=latest
-
+            
       - name: Build and push Docker images
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
