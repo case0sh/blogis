@@ -8,7 +8,7 @@ image:
   repository: case0sh/blogis
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.120"
+  tag: "1.0.123"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -77,8 +77,8 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
-
+nodeSelector:
+  kubernetes.io/arch: "amd64"
 tolerations: []
 
 affinity: {}
