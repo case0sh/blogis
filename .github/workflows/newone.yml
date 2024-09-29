@@ -2,10 +2,10 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: ["main"]
-    tags: ["v*"]
+    branches: [ "main" ]
+    tags: [ "v*" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 env:
   REGISTRY: docker.io
@@ -37,9 +37,9 @@ jobs:
       - name: OWASP ZAP Scan
         uses: zaproxy/action-baseline@v0.7.0
         with:
-          target: "http://localhost:1313"
-          rules_file_name: ".zap/rules.tsv"
-          cmd_options: "-a"
+          target: 'http://localhost:1313'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
 
   trivy-scan:
     name: Trivy vulnerability scan
@@ -58,15 +58,15 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "${{ env.IMAGE_NAME }}:test"
-          format: "sarif"
-          output: "trivy-results.sarif"
-          severity: "CRITICAL,HIGH"
+          image-ref: '${{ env.IMAGE_NAME }}:test'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: "trivy-results.sarif"
+          sarif_file: 'trivy-results.sarif'
 
   build-and-push:
     name: Build and Push Docker image
@@ -119,24 +119,37 @@ jobs:
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-          format: "table"
-          exit-code: "1"
+          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
           ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
   notify:
     name: Notify team
     needs: [build-and-push, scan-pushed-image]
     runs-on: ubuntu-latest
-    if: failure()
+    if: always()
     steps:
-      - name: Send notification
-        uses: 8398a7/action-slack@v3
+      - name: Send notification to Telegram
+        uses: appleboy/telegram-action@master
         with:
-          status: ${{ job.status }}
-          text: "Pipeline failed! @channel"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: |
+            📦 Docker Build & Push Workflow: ${{ job.status }}
+
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
+
+            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Status:
+            - Test: ${{ needs.test.result }}
+            - Trivy Scan: ${{ needs.trivy-scan.result }}
+            - Build and Push: ${{ needs.build-and-push.result }}
+            - Scan Pushed Image: ${{ needs.scan-pushed-image.result }}
+
+            ${{ job.status == 'failure' && '❗️ Attention required! Some steps failed.' || '✅ All steps completed successfully.' }}
