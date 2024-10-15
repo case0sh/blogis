@@ -11,7 +11,7 @@ jobs:
   test:
     name: OWASP ZAP Scan
     permissions:
-      id-token: write
+      id-githubToken: write
       contents: read
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -27,7 +27,8 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
@@ -68,7 +69,8 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
@@ -109,7 +111,8 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
@@ -165,7 +168,8 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
@@ -194,7 +198,8 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          method: github
           secrets: |
             projects/common TG_CHAT | TG_CHAT;
             projects/common TG_TOKEN | TG_TOKEN;
@@ -203,7 +208,7 @@ jobs:
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          githubToken: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: |
             📦 Docker Build & Push Workflow: ${{ job.status }}
 
