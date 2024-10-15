@@ -28,11 +28,11 @@ jobs:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -69,11 +69,11 @@ jobs:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -110,11 +110,11 @@ jobs:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -166,11 +166,11 @@ jobs:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
@@ -195,8 +195,8 @@ jobs:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            projects/common TG_CHAT | TG_CHAT;
-            projects/common TG_TOKEN | TG_TOKEN;
+            projects/data/common TG_CHAT | TG_CHAT;
+            projects/data/common TG_TOKEN | TG_TOKEN;
 
       - name: Send notification to Telegram
         uses: appleboy/telegram-action@master
