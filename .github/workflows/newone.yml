@@ -6,7 +6,6 @@ on:
     tags: [ "v*" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   test:
     name: OWASP ZAP Scan
@@ -27,7 +26,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.VAULT_TOKEN }}
+          githubToken:  ${{ secrets.GITHUB_TOKEN }}
           method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
@@ -69,7 +68,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.VAULT_TOKEN }}
+          githubToken:  ${{ secrets.GITHUB_TOKEN }}
           method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
@@ -111,7 +110,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.VAULT_TOKEN }}
+          githubToken:  ${{ secrets.GITHUB_TOKEN }}
           method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
@@ -168,7 +167,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.VAULT_TOKEN }}
+          githubToken:  ${{ secrets.GITHUB_TOKEN }}
           method: github
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
@@ -198,7 +197,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.VAULT_TOKEN }}
+          githubToken:  ${{ secrets.GITHUB_TOKEN }}
           method: github
           secrets: |
             projects/common TG_CHAT | TG_CHAT;
@@ -217,7 +216,6 @@ jobs:
             Commit: ${{ github.sha }}
 
             Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
             Status:
             - Test: ${{ needs.test.result }}
             - Trivy Scan: ${{ needs.trivy-scan.result }}
