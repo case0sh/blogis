@@ -26,8 +26,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.GITHUB_TOKEN }}
-          method: github
+          token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
@@ -68,8 +67,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.GITHUB_TOKEN }}
-          method: github
+          token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
@@ -110,8 +108,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.GITHUB_TOKEN }}
-          method: github
+          token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
@@ -167,8 +164,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.GITHUB_TOKEN }}
-          method: github
+          token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
             projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
@@ -197,8 +193,7 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
-          githubToken:  ${{ secrets.GITHUB_TOKEN }}
-          method: github
+          token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/common TG_CHAT | TG_CHAT;
             projects/common TG_TOKEN | TG_TOKEN;
