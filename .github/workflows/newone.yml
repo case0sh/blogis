@@ -24,7 +24,7 @@ jobs:
           echo "PRISMA_IMAGE_NAME=$REPO_NAME-migration-image" >> $GITHUB_ENV
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v2.4.0.4.0
+        uses: hashicorp/vault-action@v2.4.0
         with:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
