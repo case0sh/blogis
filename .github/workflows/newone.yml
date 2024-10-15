@@ -7,17 +7,34 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  REGISTRY: docker.io
-  IMAGE_NAME: ${{ secrets.DOCKER_REPO }}
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
 jobs:
   test:
-    name: OWASP ZAP Scan
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
+      - name: Extract Repository Name
+        id: repo_name
+        run: |
+          REPO_NAME=$(echo '${{ github.repository }}' | cut -d'/' -f2)
+          echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+          echo "PRISMA_IMAGE_NAME=$REPO_NAME-migration-image" >> $GITHUB_ENV
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_URL }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          method: github
+          secrets: |
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -42,9 +59,24 @@ jobs:
           cmd_options: '-a'
 
   trivy-scan:
+
     name: Trivy vulnerability scan
     runs-on: ubuntu-latest
     steps:
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_URL }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          method: github
+          secrets: |
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -73,6 +105,20 @@ jobs:
     needs: [test, trivy-scan]
     runs-on: ubuntu-latest
     steps:
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_URL }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          method: github
+          secrets: |
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -116,6 +162,20 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_URL }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          method: github
+          secrets: |
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
@@ -132,6 +192,17 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_URL }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          method: github
+          secrets: |
+            projects/common TG_CHAT | TG_CHAT;
+            projects/common TG_TOKEN | TG_TOKEN;
+
       - name: Send notification to Telegram
         uses: appleboy/telegram-action@master
         with:
