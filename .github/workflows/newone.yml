@@ -30,11 +30,11 @@ jobs:
           githubToken:  ${{ secrets.VAULT_TOKEN }}
           method: github
           secrets: |
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -72,11 +72,11 @@ jobs:
           githubToken:  ${{ secrets.VAULT_TOKEN }}
           method: github
           secrets: |
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -114,11 +114,11 @@ jobs:
           githubToken:  ${{ secrets.VAULT_TOKEN }}
           method: github
           secrets: |
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -171,11 +171,11 @@ jobs:
           githubToken:  ${{ secrets.VAULT_TOKEN }}
           method: github
           secrets: |
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker image_name | IMAGE_NAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_repo | DOCKER_REPO;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_username | DOCKER_USERNAME;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker docker_password | DOCKER_PASSWORD;
-            projects/${{ env.REPO_NAME }}/${{ github.ref_name }}/docker registry | REGISTRY;
+            projects/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
