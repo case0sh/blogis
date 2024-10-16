@@ -198,6 +198,7 @@ jobs:
     needs: [build-and-push, scan-pushed-image]
     runs-on: self-hosted
     if: always()
+    continue-on-error: true
     steps:
       - name: Import Secrets
         id: import-secrets
@@ -213,19 +214,20 @@ jobs:
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TG_CHAT }}
-          githubToken:  ${{ secrets.TG_TOKEN }}
+          token:  ${{ secrets.TG_TOKEN }}
+          format: html
           message: |
-            📦 Docker Build & Push Workflow: ${{ job.status }}
-
-            Repository: ${{ github.repository }}
-            Branch: ${{ github.ref }}
-            Commit: ${{ github.sha }}
-
-            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            Status:
-            - Test: ${{ needs.test.result }}
-            - Trivy Scan: ${{ needs.trivy-scan.result }}
-            - Build and Push: ${{ needs.build-and-push.result }}
-            - Scan Pushed Image: ${{ needs.scan-pushed-image.result }}
-
-            ${{ job.status == 'failure' && '❗️ Attention required! Some steps failed.' || '✅ All steps completed successfully.' }}
+            <b>📦 Docker Build & Push Workflow: ${{ job.status }}</b>
+            <b>${{ github.actor }} executed CI for</b>
+            <b>Repository: ${{ github.repository }}</b>
+            <b>Branch: ${{ github.ref }}</b>
+            <b>Commit: ${{ github.sha }}</b>
+            <b></b>
+            <b>Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}</b>
+            <b>Status:</b>
+            <b>- Test: ${{ needs.test.result }}</b>
+            <b>- Trivy Scan: ${{ needs.trivy-scan.result }}</b>
+            <b>- Build and Push: ${{ needs.build-and-push.result }}</b>
+            <b>- Scan Pushed Image: ${{ needs.scan-pushed-image.result }}</b>
+            <b></b>
+            <b>${{ job.status == 'failure' && '❗️ Attention required! Some steps failed.' || '✅ All steps completed successfully.' }}</b>
