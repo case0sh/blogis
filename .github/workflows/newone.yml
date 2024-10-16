@@ -21,12 +21,11 @@ jobs:
         run: |
           REPO_NAME=$(echo '${{ github.repository }}' | cut -d'/' -f2)
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
-          echo "PRISMA_IMAGE_NAME=$REPO_NAME-migration-image" >> $GITHUB_ENV
       - name: Import Secrets
         id: import-secrets
         uses: hashicorp/vault-action@v2.4.0
         with:
-          url: ${{ secrets.VAULT_URL }}
+          url: https://val.case0sh.com
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
@@ -35,187 +34,200 @@ jobs:
             projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
             projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          load: true
-          tags: ${{ env.IMAGE_NAME }}:test
-
-      - name: Run Docker image
-        run: docker run -d -p 1313:80 --name test-container ${{ env.IMAGE_NAME }}:test
-
-      - name: OWASP ZAP Scan
-        uses: zaproxy/action-baseline@v0.7.0
-        with:
-          target: 'http://localhost:1313'
-          rules_file_name: '.zap/rules.tsv'
-          cmd_options: '-a'
-
-  trivy-scan:
-
-    name: Trivy vulnerability scan
-    runs-on: ubuntu-latest
-    steps:
       - name: Import Secrets
         id: import-secrets
         uses: hashicorp/vault-action@v2.4.0
         with:
-          url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
+          url: https://val.case0sh.com
+          method: github
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
             projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
             projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
             projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
             projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
             projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          load: true
-          tags: ${{ env.IMAGE_NAME }}:test
+  #     - name: Build Docker image
+  #       uses: docker/build-push-action@v4
+  #       with:
+  #         context: .
+  #         load: true
+  #         tags: ${{ env.IMAGE_NAME }}:test
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ env.IMAGE_NAME }}:test'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+  #     - name: Run Docker image
+  #       run: docker run -d -p 1313:80 --name test-container ${{ env.IMAGE_NAME }}:test
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
+  #     - name: OWASP ZAP Scan
+  #       uses: zaproxy/action-baseline@v0.7.0
+  #       with:
+  #         target: 'http://localhost:1313'
+  #         rules_file_name: '.zap/rules.tsv'
+  #         cmd_options: '-a'
 
-  build-and-push:
-    name: Build and Push Docker image
-    needs: [test, trivy-scan]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Import Secrets
-        id: import-secrets
-        uses: hashicorp/vault-action@v2.4.0
-        with:
-          url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
-          secrets: |
-            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+  # trivy-scan:
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #   name: Trivy vulnerability scan
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Import Secrets
+  #       id: import-secrets
+  #       uses: hashicorp/vault-action@v2.4.0
+  #       with:
+  #         url: ${{ secrets.VAULT_URL }}
+  #         token: ${{ secrets.VAULT_TOKEN }}
+  #         secrets: |
+  #           projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+  #           projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+  #     - name: Build Docker image
+  #       uses: docker/build-push-action@v4
+  #       with:
+  #         context: .
+  #         load: true
+  #         tags: ${{ env.IMAGE_NAME }}:test
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
+  #     - name: Run Trivy vulnerability scanner
+  #       uses: aquasecurity/trivy-action@master
+  #       with:
+  #         image-ref: '${{ env.IMAGE_NAME }}:test'
+  #         format: 'sarif'
+  #         output: 'trivy-results.sarif'
+  #         severity: 'CRITICAL,HIGH'
 
-      - name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=ref,event=branch
-            type=sha
+  #     - name: Upload Trivy scan results to GitHub Security tab
+  #       uses: github/codeql-action/upload-sarif@v2
+  #       with:
+  #         sarif_file: 'trivy-results.sarif'
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+  # build-and-push:
+  #   name: Build and Push Docker image
+  #   needs: [test, trivy-scan]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Import Secrets
+  #       id: import-secrets
+  #       uses: hashicorp/vault-action@v2.4.0
+  #       with:
+  #         url: ${{ secrets.VAULT_URL }}
+  #         token: ${{ secrets.VAULT_TOKEN }}
+  #         secrets: |
+  #           projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+  #           projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
-  scan-pushed-image:
-    name: Scan pushed Docker image
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Import Secrets
-        id: import-secrets
-        uses: hashicorp/vault-action@v2.4.0
-        with:
-          url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
-          secrets: |
-            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v2
 
-  notify:
-    name: Notify team
-    needs: [build-and-push, scan-pushed-image]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Import Secrets
-        id: import-secrets
-        uses: hashicorp/vault-action@v2.4.0
-        with:
-          url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
-          secrets: |
-            projects/data/common TG_CHAT | TG_CHAT;
-            projects/data/common TG_TOKEN | TG_TOKEN;
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
 
-      - name: Send notification to Telegram
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          githubToken:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: |
-            📦 Docker Build & Push Workflow: ${{ job.status }}
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ env.DOCKER_USERNAME }}
+  #         password: ${{ env.DOCKER_PASSWORD }}
 
-            Repository: ${{ github.repository }}
-            Branch: ${{ github.ref }}
-            Commit: ${{ github.sha }}
+  #     - name: Extract metadata for Docker
+  #       id: meta
+  #       uses: docker/metadata-action@v4
+  #       with:
+  #         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+  #         tags: |
+  #           type=semver,pattern={{version}}
+  #           type=semver,pattern={{major}}.{{minor}}
+  #           type=semver,pattern={{major}}
+  #           type=ref,event=branch
+  #           type=sha
 
-            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            Status:
-            - Test: ${{ needs.test.result }}
-            - Trivy Scan: ${{ needs.trivy-scan.result }}
-            - Build and Push: ${{ needs.build-and-push.result }}
-            - Scan Pushed Image: ${{ needs.scan-pushed-image.result }}
+  #     - name: Build and push Docker image
+  #       uses: docker/build-push-action@v4
+  #       with:
+  #         context: .
+  #         push: ${{ github.event_name != 'pull_request' }}
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
+  #         platforms: linux/amd64,linux/arm64
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
 
-            ${{ job.status == 'failure' && '❗️ Attention required! Some steps failed.' || '✅ All steps completed successfully.' }}
+  # scan-pushed-image:
+  #   name: Scan pushed Docker image
+  #   needs: build-and-push
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Import Secrets
+  #       id: import-secrets
+  #       uses: hashicorp/vault-action@v2.4.0
+  #       with:
+  #         url: ${{ secrets.VAULT_URL }}
+  #         token: ${{ secrets.VAULT_TOKEN }}
+  #         secrets: |
+  #           projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+  #           projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+  #           projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+
+  #     - name: Scan image with Trivy
+  #       uses: aquasecurity/trivy-action@master
+  #       with:
+  #         image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
+  #         format: 'table'
+  #         exit-code: '1'
+  #         ignore-unfixed: true
+  #         vuln-type: 'os,library'
+  #         severity: 'CRITICAL,HIGH'
+
+  # notify:
+  #   name: Notify team
+  #   needs: [build-and-push, scan-pushed-image]
+  #   runs-on: ubuntu-latest
+  #   if: always()
+  #   steps:
+  #     - name: Import Secrets
+  #       id: import-secrets
+  #       uses: hashicorp/vault-action@v2.4.0
+  #       with:
+  #         url: ${{ secrets.VAULT_URL }}
+  #         token: ${{ secrets.VAULT_TOKEN }}
+  #         secrets: |
+  #           projects/data/common TG_CHAT | TG_CHAT;
+  #           projects/data/common TG_TOKEN | TG_TOKEN;
+
+  #     - name: Send notification to Telegram
+  #       uses: appleboy/telegram-action@master
+  #       with:
+  #         to: ${{ secrets.TELEGRAM_CHAT_ID }}
+  #         githubToken:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  #         message: |
+  #           📦 Docker Build & Push Workflow: ${{ job.status }}
+
+  #           Repository: ${{ github.repository }}
+  #           Branch: ${{ github.ref }}
+  #           Commit: ${{ github.sha }}
+
+  #           Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+  #           Status:
+  #           - Test: ${{ needs.test.result }}
+  #           - Trivy Scan: ${{ needs.trivy-scan.result }}
+  #           - Build and Push: ${{ needs.build-and-push.result }}
+  #           - Scan Pushed Image: ${{ needs.scan-pushed-image.result }}
+
+  #           ${{ job.status == 'failure' && '❗️ Attention required! Some steps failed.' || '✅ All steps completed successfully.' }}
