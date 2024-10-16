@@ -57,7 +57,7 @@ jobs:
 
   trivy-scan:
     name: Trivy vulnerability scan
-    runs-on: runner
+    runs-on: self-hostedp
     steps:
       - name: Extract Repository Name
         id: repo_name
