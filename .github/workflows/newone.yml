@@ -23,16 +23,16 @@ jobs:
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v3
+        uses: hashicorp/vault-action@v2
         with:
-          url: https://val.case0sh.com
+          url: https://val.case0sh.com/v1/
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v2
 
   #     - name: Set up Docker Buildx
   #       uses: docker/setup-buildx-action@v2
@@ -65,7 +65,7 @@ jobs:
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v3
+        uses: hashicorp/vault-action@v2
         with:
           url: https://val.case0sh.com/v1/
           method: github
@@ -75,7 +75,7 @@ jobs:
 
 
   #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v2
 
   #     - name: Build Docker image
   #       uses: docker/build-push-action@v4
@@ -104,7 +104,7 @@ jobs:
   #   steps:
   #     - name: Import Secrets
   #       id: import-secrets
-  #       uses: hashicorp/vault-action@v3
+  #       uses: hashicorp/vault-action@v2
   #       with:
   #         url: ${{ secrets.VAULT_URL }}
   #         token: ${{ secrets.VAULT_TOKEN }}
@@ -116,7 +116,7 @@ jobs:
   #           projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
   #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v2
 
   #     - name: Set up QEMU
   #       uses: docker/setup-qemu-action@v2
@@ -160,7 +160,7 @@ jobs:
   #   steps:
   #     - name: Import Secrets
   #       id: import-secrets
-  #       uses: hashicorp/vault-action@v3
+  #       uses: hashicorp/vault-action@v2
   #       with:
   #         url: ${{ secrets.VAULT_URL }}
   #         token: ${{ secrets.VAULT_TOKEN }}
@@ -189,7 +189,7 @@ jobs:
   #   steps:
   #     - name: Import Secrets
   #       id: import-secrets
-  #       uses: hashicorp/vault-action@v3
+  #       uses: hashicorp/vault-action@v2
   #       with:
   #         url: ${{ secrets.VAULT_URL }}
   #         token: ${{ secrets.VAULT_TOKEN }}
