@@ -8,12 +8,13 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   test:
+    runs-on: runner
     name: OWASP ZAP Scan
     permissions:
       id-token: write
       contents: read
-    runs-on: ubuntu-latest
     continue-on-error: true
     steps:
       - name: Extract Repository Name
@@ -56,7 +57,7 @@ jobs:
 
   trivy-scan:
     name: Trivy vulnerability scan
-    runs-on: ubuntu-latest
+    runs-on: runner
     steps:
       - name: Extract Repository Name
         id: repo_name
