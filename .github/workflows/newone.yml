@@ -27,8 +27,8 @@ jobs:
         with:
           url: https://val.case0sh.com
           token: ${{ secrets.VAULT_TOKEN }}
-          exportToken: true
-
+          secrets: |
+            projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
@@ -70,7 +70,8 @@ jobs:
           url: https://val.case0sh.com
           method: github
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          exportToken: true
+          secrets: |
+            projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
