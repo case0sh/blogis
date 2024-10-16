@@ -209,12 +209,16 @@ jobs:
           secrets: |
             projects/data/common TG_CHAT | TG_CHAT;
             projects/data/common TG_TOKEN | TG_TOKEN;
-
+      - name: Create variables
+        id: vars-notification
+        run: |
+          COMMIT_MESSAGE=$(echo "${{ github.event.commits[0].message }}" | head -n 1)
+          echo "::set-output name=COMMIT_MESSAGE::$COMMIT_MESSAGE"
       - name: Send notification to Telegram
         uses: appleboy/telegram-action@master
         with:
-          to: ${{ secrets.TG_CHAT }}
-          token:  ${{ secrets.TG_TOKEN }}
+          to: ${{ steps.import-secrets.outputs.TG_CHAT }}
+          token: ${{ steps.import-secrets.outputs.TG_TOKEN }}
           format: html
           message: |
             <b>📦 Docker Build & Push Workflow: ${{ job.status }}</b>
