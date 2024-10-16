@@ -27,6 +27,7 @@ jobs:
         with:
           url: https://val.case0sh.com/v1/
           token: ${{ secrets.VAULT_TOKEN }}
+          exportToken: true
           secrets: |
             projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
             projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
@@ -74,6 +75,7 @@ jobs:
           url: https://val.case0sh.com/v1/
           method: github
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          exportToken: true
           secrets: |
             projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
             projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
