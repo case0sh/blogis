@@ -23,12 +23,12 @@ jobs:
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v2.4.0
+        uses: hashicorp/vault-action@v3
         with:
           url: https://val.case0sh.com
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            /v1/projects/data/blogis/docker registry | REGISTRY;
+            projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
@@ -65,13 +65,13 @@ jobs:
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v2.4.0
+        uses: hashicorp/vault-action@v3
         with:
           url: https://val.case0sh.com
           method: github
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
-            /v1/projects/data/blogis/docker registry | REGISTRY;
+            projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
@@ -104,7 +104,7 @@ jobs:
   #   steps:
   #     - name: Import Secrets
   #       id: import-secrets
-  #       uses: hashicorp/vault-action@v2.4.0
+  #       uses: hashicorp/vault-action@v3
   #       with:
   #         url: ${{ secrets.VAULT_URL }}
   #         token: ${{ secrets.VAULT_TOKEN }}
@@ -160,7 +160,7 @@ jobs:
   #   steps:
   #     - name: Import Secrets
   #       id: import-secrets
-  #       uses: hashicorp/vault-action@v2.4.0
+  #       uses: hashicorp/vault-action@v3
   #       with:
   #         url: ${{ secrets.VAULT_URL }}
   #         token: ${{ secrets.VAULT_TOKEN }}
@@ -189,7 +189,7 @@ jobs:
   #   steps:
   #     - name: Import Secrets
   #       id: import-secrets
-  #       uses: hashicorp/vault-action@v2.4.0
+  #       uses: hashicorp/vault-action@v3
   #       with:
   #         url: ${{ secrets.VAULT_URL }}
   #         token: ${{ secrets.VAULT_TOKEN }}
