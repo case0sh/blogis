@@ -28,7 +28,7 @@ jobs:
           url: https://val.case0sh.com
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
-            projects/data/blogis/docker registry | REGISTRY;
+            /v1/projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
@@ -71,7 +71,7 @@ jobs:
           method: github
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
-            projects/data/blogis/docker registry | REGISTRY;
+            /v1/projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
