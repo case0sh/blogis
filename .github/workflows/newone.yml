@@ -26,7 +26,7 @@ jobs:
         id: import-secrets
         uses: hashicorp/vault-action@v2
         with:
-          url: https://val.case0sh.com/v1/
+          url: https://val.case0sh.com
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/data/blogis/docker registry | REGISTRY;
@@ -68,7 +68,7 @@ jobs:
         id: import-secrets
         uses: hashicorp/vault-action@v2
         with:
-          url: https://val.case0sh.com/v1/
+          url: https://val.case0sh.com
           method: github
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
