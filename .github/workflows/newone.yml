@@ -67,7 +67,7 @@ jobs:
         id: import-secrets
         uses: hashicorp/vault-action@v3
         with:
-          url: https://val.case0sh.com
+          url: https://val.case0sh.com/v1/
           method: github
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
