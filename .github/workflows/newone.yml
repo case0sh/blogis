@@ -25,7 +25,7 @@ jobs:
         id: import-secrets
         uses: hashicorp/vault-action@v2.4.0
         with:
-          url: https://val.case0sh.com
+          url: https://val.case0sh.com/v1/
           token: ${{ secrets.VAULT_TOKEN }}
           secrets: |
             projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
@@ -62,6 +62,11 @@ jobs:
     name: Trivy vulnerability scan
     runs-on: ubuntu-latest
     steps:
+      - name: Extract Repository Name
+        id: repo_name
+        run: |
+          REPO_NAME=$(echo '${{ github.repository }}' | cut -d'/' -f2)
+          echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
       - name: Import Secrets
         id: import-secrets
         uses: hashicorp/vault-action@v2.4.0
