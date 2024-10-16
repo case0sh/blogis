@@ -116,7 +116,7 @@ jobs:
     steps:
       - name: Import Secrets
         id: import-secrets
-        uses: hashicorp/vault-action@v2
+        uses: hashicorp/vault-action@v3
         with:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ secrets.VAULT_TOKEN }}
