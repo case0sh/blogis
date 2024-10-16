@@ -34,19 +34,7 @@ jobs:
             projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
             projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
-      - name: Import Secrets
-        id: import-secrets
-        uses: hashicorp/vault-action@v2.4.0
-        with:
-          url: https://val.case0sh.com
-          method: github
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          secrets: |
-            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+
   #     - name: Checkout repository
   #       uses: actions/checkout@v3
 
@@ -70,23 +58,23 @@ jobs:
   #         rules_file_name: '.zap/rules.tsv'
   #         cmd_options: '-a'
 
-  # trivy-scan:
-
-  #   name: Trivy vulnerability scan
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Import Secrets
-  #       id: import-secrets
-  #       uses: hashicorp/vault-action@v2.4.0
-  #       with:
-  #         url: ${{ secrets.VAULT_URL }}
-  #         token: ${{ secrets.VAULT_TOKEN }}
-  #         secrets: |
-  #           projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-  #           projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-  #           projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-  #           projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-  #           projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+  trivy-scan:
+    name: Trivy vulnerability scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2.4.0
+        with:
+          url: https://val.case0sh.com
+          method: github
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          secrets: |
+            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
+            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
+            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
+            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
 
   #     - name: Checkout repository
   #       uses: actions/checkout@v3
