@@ -25,15 +25,15 @@ jobs:
         id: import-secrets
         uses: hashicorp/vault-action@v2.4.0
         with:
-          url: https://val.case0sh.com/v1/
+          url: https://val.case0sh.com/v1
           token: ${{ secrets.VAULT_TOKEN }}
           exportToken: true
           secrets: |
-            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+            /projects/data/blogis/docker image_name | IMAGE_NAME;
+            /projects/data/blogis/docker docker_repo | DOCKER_REPO;
+            /projects/data/blogis/docker docker_username | DOCKER_USERNAME;
+            /projects/data/blogis/docker docker_password | DOCKER_PASSWORD;
+            /projects/data/blogis/docker registry | REGISTRY;
 
 
   #     - name: Checkout repository
@@ -72,16 +72,16 @@ jobs:
         id: import-secrets
         uses: hashicorp/vault-action@v2.4.0
         with:
-          url: https://val.case0sh.com/v1/
+          url: https://val.case0sh.com/v1
           method: github
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           exportToken: true
           secrets: |
-            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
+            /projects/data/blogis/docker image_name | IMAGE_NAME;
+            /projects/data/blogis/docker docker_repo | DOCKER_REPO;
+            /projects/data/blogis/docker docker_username | DOCKER_USERNAME;
+            /projects/data/blogis/docker docker_password | DOCKER_PASSWORD;
+            /projects/data/blogis/docker registry | REGISTRY;
 
   #     - name: Checkout repository
   #       uses: actions/checkout@v3
