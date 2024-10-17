@@ -15,6 +15,10 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
     continue-on-error: true
     steps:
       - name: Extract Repository Name
