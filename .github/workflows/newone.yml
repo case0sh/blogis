@@ -8,13 +8,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   test:
     runs-on: self-hosted
     name: OWASP ZAP Scan
     permissions:
       id-token: write
       contents: read
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
     continue-on-error: true
     steps:
       - name: Extract Repository Name
@@ -34,7 +37,6 @@ jobs:
             projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
             projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
             projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
-
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -63,8 +65,8 @@ jobs:
           allow_issue_writing: false
           cmd_options: '-a'
 
-  trivy-scan:
-    name: Trivy vulnerability scan
+  snyk-scan:
+    name: Snyk vulnerability scan
     runs-on: self-hosted
     steps:
       - name: Extract Repository Name
@@ -84,7 +86,7 @@ jobs:
             projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
             projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
             projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
-
+            projects/data/common snyk_token | SNYK_TOKEN;
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -96,22 +98,22 @@ jobs:
           load: true
           tags: ${{ env.IMAGE_NAME }}:test
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+      - name: Run Snyk to check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ env.SNYK_TOKEN }}
         with:
-          image-ref: '${{ env.IMAGE_NAME }}:test'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          image: ${{ env.IMAGE_NAME }}:test
+          args: --file=Dockerfile
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      - name: Upload Snyk scan results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: snyk.sarif
 
   build-and-push:
     name: Build and Push Docker image
-    needs: [test, trivy-scan]
+    needs: [test, snyk-scan]
     runs-on: self-hosted
     steps:
       - name: Import Secrets
@@ -165,37 +167,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  scan-pushed-image:
-    name: Scan pushed Docker image
-    needs: build-and-push
-    runs-on: self-hosted
-    steps:
-      - name: Import Secrets
-        id: import-secrets
-        uses: hashicorp/vault-action@v2
-        with:
-          url: ${{ secrets.VAULT_URL }}
-          token: ${{ secrets.VAULT_TOKEN }}
-          secrets: |
-            projects/data/${{ env.REPO_NAME }}/docker image_name | IMAGE_NAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_repo | DOCKER_REPO;
-            projects/data/${{ env.REPO_NAME }}/docker docker_username | DOCKER_USERNAME;
-            projects/data/${{ env.REPO_NAME }}/docker docker_password | DOCKER_PASSWORD;
-            projects/data/${{ env.REPO_NAME }}/docker registry | REGISTRY;
-
-      - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-
   notify:
     name: Notify team
-    needs: [build-and-push, scan-pushed-image]
+    needs: [build-and-push]
     runs-on: self-hosted
     if: always()
     continue-on-error: true
@@ -230,8 +204,7 @@ jobs:
             <b>Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}</b>
             <b>Status:</b>
             <b>- Test: ${{ needs.test.result }}</b>
-            <b>- Trivy Scan: ${{ needs.trivy-scan.result }}</b>
+            <b>- Snyk Scan: ${{ needs.snyk-scan.result }}</b>
             <b>- Build and Push: ${{ needs.build-and-push.result }}</b>
-            <b>- Scan Pushed Image: ${{ needs.scan-pushed-image.result }}</b>
             <b></b>
             <b>${{ job.status == 'failure' && '❗️ Attention required! Some steps failed.' || '✅ All steps completed successfully.' }}</b>
