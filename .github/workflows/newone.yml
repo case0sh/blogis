@@ -68,6 +68,9 @@ jobs:
   snyk-scan:
     name: Snyk vulnerability scan
     runs-on: self-hosted
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Extract Repository Name
         id: repo_name
@@ -104,7 +107,7 @@ jobs:
           SNYK_TOKEN: ${{ env.SNYK_TOKEN }}
         with:
           image: ${{ env.IMAGE_NAME }}:test
-          args: --file=Dockerfile
+          args: --file=Dockerfile --sarif-file-output=snyk.sarif
 
       - name: Upload Snyk scan results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
